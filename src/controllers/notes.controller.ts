@@ -46,3 +46,9 @@ export const createNote = (req : Request, res: Response) => {
             note: newNote
         });
 };
+
+export const dataNotes = (req: Request, res: Response) => {
+
+    res.json(realNotes);
+
+};
