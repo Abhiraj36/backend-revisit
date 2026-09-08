@@ -2,6 +2,8 @@ import type { Request, Response } from "express";
 
 import { realNotes } from "../data/notes.js";
 
+import { getAllNotes } from "../repositories/notes.repository.js";
+
 export const createNote = (req : Request, res: Response) => {
     // Check if name exists
         if (req.body.name === undefined) {
@@ -47,8 +49,8 @@ export const createNote = (req : Request, res: Response) => {
         });
 };
 
-export const dataNotes = (req: Request, res: Response) => {
+export const dataNotes = ( req: Request, res: Response ) => {
+    const notes = getAllNotes();
 
-    res.json(realNotes);
-
+res.json(notes);
 };
