@@ -1,19 +1,16 @@
 import type { Request, Response } from "express";
-
-import { realNotes } from "../data/notes.js";
-
+import { oneNote } from "../repositories/notes.repository.js";
 
 export const getOneNote = (req: Request, res: Response) => { 
     
     const id = Number(req.params.id);
+    const foundNote = oneNote(id);
 
-    const index = realNotes.findIndex(note => note.id === id);
-
-    if (index === -1) {
+    if (foundNote === undefined) {
         return res.status(404).json({
             message: "Note not found"
         });
     }
 
-    res.json(realNotes[index]);
+    res.json(foundNote);
 }

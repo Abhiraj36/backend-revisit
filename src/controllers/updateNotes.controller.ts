@@ -1,47 +1,47 @@
+
 import type { Request, Response } from "express";
-import { realNotes } from "../data/notes.js";
+
+import { upNotes } from "../repositories/notes.repository.js";
 
 export const updateNotes = (req: Request, res: Response) => {
-    
+
     const id = Number(req.params.id);
+    const name = req.body.name;
 
     // Check if name exists
-    if (req.body.name === undefined) {
+    if (name === undefined) {
         return res.status(400).json({
             message: "Name is required"
         });
     }
 
     // Check if name is a string
-    if (typeof req.body.name !== "string") {
+    if (typeof name !== "string") {
         return res.status(400).json({
             message: "Please pass a valid string"
         });
     }
 
     // Check if name is empty or whitespace
-    if (req.body.name.trim() === "") {
+    if (name.trim() === "") {
         return res.status(400).json({
             message: "Name must not be empty or only whitespace"
         });
     }
 
-    const index = realNotes.findIndex(note => note.id === id);
+    // Ask repository to update the note
+    const updatedNote = upNotes(id, name);
 
-    if (index === -1) {
+    // Note doesn't exist
+    if (updatedNote === undefined) {
         return res.status(404).json({
             message: "Note not found"
         });
     }
 
-    realNotes[index] = {
-        id: id,
-        name: req.body.name
-    };
-
+    // Success
     res.json({
         message: "Note updated successfully",
-        note: realNotes[index]
+        note: updatedNote
     });
 };
-

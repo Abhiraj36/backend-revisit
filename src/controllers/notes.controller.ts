@@ -1,10 +1,9 @@
 import type { Request, Response } from "express";
-
-import { realNotes } from "../data/notes.js";
-
 import { getAllNotes } from "../repositories/notes.repository.js";
+import { createNote } from "../repositories/notes.repository.js";
 
-export const createNote = (req : Request, res: Response) => {
+
+export const createNoteController = (req : Request, res: Response) => {
     // Check if name exists
         if (req.body.name === undefined) {
             return res.status(400).json({
@@ -26,22 +25,7 @@ export const createNote = (req : Request, res: Response) => {
             });
         }
     
-        const lastNote = realNotes[realNotes.length - 1];
-    
-        let id: number;
-    
-        if (lastNote === undefined) {
-            id = 1;
-        } else {
-            id = lastNote.id + 1;
-        }
-    
-        const newNote = {
-            id: id,
-            name: req.body.name
-        };
-    
-        realNotes.push(newNote);
+        const newNote = createNote(req.body.name);
     
         res.status(201).json({
             message: "Note created successfully",
