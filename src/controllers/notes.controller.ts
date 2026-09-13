@@ -3,7 +3,7 @@ import { getAllNotes } from "../repositories/notes.repository.js";
 import { createNote } from "../repositories/notes.repository.js";
 
 
-export const createNoteController = (req : Request, res: Response) => {
+export const createNoteController = async (req : Request, res: Response) => {
     // Check if name exists
         if (req.body.name === undefined) {
             return res.status(400).json({
@@ -25,7 +25,7 @@ export const createNoteController = (req : Request, res: Response) => {
             });
         }
     
-        const newNote = createNote(req.body.name);
+        const newNote = await createNote(req.body.name);
     
         res.status(201).json({
             message: "Note created successfully",
@@ -33,8 +33,8 @@ export const createNoteController = (req : Request, res: Response) => {
         });
 };
 
-export const dataNotes = ( req: Request, res: Response ) => {
-    const notes = getAllNotes();
+export const dataNotes = async( req: Request, res: Response ) => {
+    const notes = await getAllNotes();
 
 res.json(notes);
 };

@@ -1,28 +1,23 @@
 import { realNotes } from "../data/notes.js";
-export const getAllNotes = () => {
-    return realNotes;
-};
+import { pool } from "../db.js";
 
-export const createNote = (name: string) => {
-    
-        const lastNote = realNotes[realNotes.length -1 ]
-    
-        let id: number;
-    
-        if (lastNote === undefined) {
-            id = 1;
-        } else {
-            id = lastNote.id + 1;
-        }
-    
-        const newNote = {
-            id: id,
-            name: name
-        };
-    
-        realNotes.push(newNote);
-        return newNote;
-    };
+export const getAllNotes = async () => {
+   const result = await pool.query(
+    `Select * from notes order By id`
+   );
+   return result.rows;
+}
+
+export const createNote = async (name: string) => {
+    const result = await pool.query(
+        `INSERT INTO notes (name)
+         VALUES ($1)
+         RETURNING *`,
+        [name]
+    );
+
+    return result.rows[0];
+};
 
     export const delNote = (id: number) => {
     const index = realNotes.findIndex(note => note.id === id);
@@ -64,3 +59,4 @@ export const upNotes = (id: number, name: string) => {
 
     return realNotes[index];
 };
+
