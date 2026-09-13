@@ -1,5 +1,4 @@
 import { realNotes } from "../data/notes.js";
-
 export const getAllNotes = () => {
     return realNotes;
 };

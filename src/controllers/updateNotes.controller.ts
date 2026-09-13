@@ -1,6 +1,5 @@
 
 import type { Request, Response } from "express";
-
 import { upNotes } from "../repositories/notes.repository.js";
 
 export const updateNotes = (req: Request, res: Response) => {

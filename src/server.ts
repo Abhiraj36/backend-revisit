@@ -1,5 +1,6 @@
 import express from "express";
 import notesRouter from "./routes/notes.routes.js";
+import "./db.js";
 
 const app = express();
 
